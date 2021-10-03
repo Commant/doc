@@ -1,0 +1,66 @@
+
+Pour l'interface moyen niveau C++, la déclaration d'un registre vectoriel ou d'un masque se fait par l'utilisation des templates:
+
+\begin{center}
+\begin{tabular}{c}
+\begin{lstlisting}
+reg<type, lmul> r;
+msk<type, lmul> m;
+\end{lstlisting}
+\end{tabular}
+\end{center}
+
+Où les types et les valeur de \texttt{lmul} possible sont listées dans ce tableau:
+
+\begin{center}
+\begin{tabular}{|l|p{8cm}|} 
+   \hline \texttt{\color{blue}type} & \texttt{int8\_t, int16\_t, int32\_t, int64\_t (int), uint8\_t, uint16\_t, uint32\_t, uint64\_t (unsinged int), float32\_t (float), float64\_t (double)}\\
+   \hline \texttt{\color{purple}LMUL} & \texttt{1, 2, 4, 8,  $\varnothing$}\\
+   \hline
+\end{tabular}
+\end{center}
+
+En revanche, les templates n'existant pas en C, les noms des types dans \mipp bas niveau sont le résultat de l'application d'un \tic{blue}{typedef} sur un nom de type explicite. Ils prennent cette syntaxe :
+\begin{center}
+\begin{longtable}{l l}
+
+Registre vectoriel: & \ti{rvd\_\textcolor{blue}{\textbf{type}}\_m\textcolor{purple}{\textbf{LMUL}}\_t}\\
+Masque: & \ti{rvm\_\textcolor{blue}{\textbf{type}}\_m\textcolor{purple}{\textbf{LMUL}}\_t}\\
+
+\end{longtable}
+\end{center}
+
+Où \tic{blue}{type} et \tic{purple}{LMUL} peuvent prendre les valeurs:
+
+\begin{center}
+\begin{tabular}{|l|p{8cm}|} 
+   \hline \texttt{\textbf{\color{blue}type}} & \texttt{int8, int16, int32, int64, uint8, uint16, uint32, uint64, float32, float64}\\
+   \hline \texttt{\textbf{\color{purple}LMUL}} & \texttt{1, 2, 4, 8}\\
+   \hline
+\end{tabular}
+\end{center}
+
+Afin d'épargner la gestion et compréhension du \ti{LMUL} aux utilisateurs qui n'en n'ont pas besoin, il est possible dans les deux interfaces \mipp de ne pas indiquer de \ti{LMUL}, qui aura pour valeur par défaut \ti{LMUL=1}. Ce qui donne ces syntaxes de type possible: 
+
+\begin{center}
+\begin{tabular}{|l|c|c|}
+\hline & Moyen niveau (\ti{C++}) & Bas niveau (\ti{C})\\
+
+\hline Registre vectoriel
+&
+\begin{lstlisting}
+   reg<type>
+\end{lstlisting}
+&
+\ti{rvd\_\textcolor{blue}{\textbf{type}}\_t}
+\\
+\hline Masque
+&
+\begin{lstlisting}
+   msk<type>
+\end{lstlisting}
+&
+\ti{rvm\_\textcolor{blue}{\textbf{type}}\_t}
+\\ \hline   
+\end{tabular}
+\end{center}

@@ -1,0 +1,170 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{subcaption}
+\usepackage{graphicx}
+\graphicspath{ {./img/} }
+\usepackage{float}
+\usepackage{listings}
+\usepackage{pdfpages}
+\usepackage{babel}
+\usepackage[scaled]{helvet}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{color}
+\usepackage{url}
+\usepackage{xcolor}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{multirow,makecell}
+\usepackage{indentfirst}
+\usepackage{bold-extra}
+\usepackage{lmodern}
+\usepackage{amssymb} 
+\usepackage{geometry}
+
+\geometry{hmargin=2.5cm,vmargin=2.5cm}
+
+\setcellgapes{1pt}
+\makegapedcells
+\newcolumntype{R}[1]{>{\raggedleft\arraybackslash }b{#1}}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash }b{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash }b{#1}}
+
+%%%%%%%%%%%%%%%% Lengths %%%%%%%%%%%%%%%%
+\setlength{\textwidth}{15.5cm}
+\setlength{\evensidemargin}{0.5cm}
+\setlength{\oddsidemargin}{0.5cm}
+
+\lstset{ keywordstyle=\color{blue},
+         stringstyle=\color{red},
+         commentstyle=\color{green},
+         morecomment=[l][\color{magenta}]{\#},
+         basicstyle=\ttfamily,
+         breaklines=false,
+         keywords=[2]{void,int,float,double,T,size_t,bool,unsigned,long,mipp_fonction,type, type1,type2, uint_type, float, uint, float32_t, float64_t, int8_t, int16_t, int32_t, int64_t, uint8_t, uint16_t, uint32_t, uint64_t},
+         keywords=[3]{lmul},
+         keywords=[4]{msk, rvm_float32_m2_t},
+         keywords=[5]{reg, rvd_float32_m2_t},
+         keywords=[6]{const},
+         keywords=[7]{mipp_function},
+         keywords=[8]{masque, maskedoff},
+         keywordstyle={[2]\ttfamily\color{blue!90!black}},
+         keywordstyle={[3]\ttfamily\color{purple!50!blue}},
+         keywordstyle={[4]\ttfamily\color{blue!30!orange}},
+         keywordstyle={[5]\ttfamily\color{green!60!blue}},
+         keywordstyle={[6]\ttfamily\color{red}},
+         keywordstyle={[7]\ttfamily\color{orange}},
+         keywordstyle={[8]\ttfamily\color{gray}}
+}
+
+
+%================NEWCOMMAND=====================
+
+\newcommand{\mipp}{MIPPv2\ }
+\newcommand{\ti}[1]{\texttt{#1}}
+\newcommand{\tic}[2]{\texttt{\textbf{\textcolor{#1}{#2}}}}
+
+%===============================================
+
+\begin{document}
+
+
+
+\newlength{\larg}
+\setlength{\larg}{15.5cm}
+ 
+% La commande \title... bien chargée ! 
+\title{
+\vspace{1cm}
+{\rule{\larg}{1mm}}\vspace{7mm}
+\begin{tabular}{p{4cm} r}
+   & {\Huge {\bf Documentation MIPP v2}} \\
+   & \\
+   & {\huge Extension vectorielle RISC-V}
+\end{tabular}\\
+\vspace{2mm}
+{\rule{\larg}{1mm}}
+\vspace{2mm} \\
+
+
+
+\centering 
+\includegraphics[width=7cm]{img/riscv.png}\\
+\includegraphics[width=10cm]{img/mipp.jpg} 
+
+
+\vspace{4.0cm}
+
+}
+
+\author{\begin{tabular}{p{13.7cm}}
+Edgar Baucher
+\end{tabular}\\
+\hline }
+\date{}
+ 
+\maketitle
+
+\section{L’extension vectorielle de RISC-V}
+
+L'architecture RISC-V possède une structure et un jeu d'instruction qui se montre sur certains points fondamentalement différent des autres jeux d'instructions. Sur l'extension vectorielle, la plus singulière des différences est certainement l'utilisation du LMUL:
+
+\subsection{LMUL (vector \textbf{L}ength \textbf{MUL}tiplier)}
+
+   \input{LMUL_de_ses_morts.tex}
+
+\subsection{Taille agnostique des registres vectoriels}
+
+   \input{agnostic.tex}
+
+\subsection{Fonctions intrinsèques vectorielles}
+
+   \input{syntaxe.tex}
+
+\section{Wrapper de vectorisation: MIPP v2}
+
+\subsection{Implémentation en 3 couches}
+   
+   C, C++, C++ avec classe\\
+   un mipp\_v2\_impl\_RVV.h qui crée les fonctions C à partir des intrinsèques C propres au processeu\\
+   un mipp.h qui s'occupe de faire les LMUL=1 par défaut\\
+   un mipp.hpp qui s’occupe de faire les fonctions c++ à partir des fonctions c\\
+
+\subsection{Gestion des vecteurs à taille agnostique}
+
+   type comme champ d'une classe (géré par mipp.hpp)
+
+\subsection{Utilisation}
+
+   \subsubsection{Types}
+
+      \input{types.tex}
+
+   \subsubsection{Fonctions}
+   
+      \input{liste_fonctions.tex}
+
+\subsection{Génération des fonctions}
+
+   SWITCHS sur LMUL et nbits\\
+   Construction du nom de la fonction intrinsèque\\
+   Spécification des macros => génération
+
+\subsection{Tests}
+
+   \subsubsection{Environnement}
+
+      spike pas ouf, gem5 mieux (voir discord)\\
+      décrire un peu spike, pk et où en sont les compilateurs\\
+      Spike est un simulateur fonctionnel, il ne simule pas l'architecture mais uniquement le jeu d'instruction\\
+      GEM5 je ne sais pas bien jusqu'où il va mais il simule l'architecture du processeur
+
+   \subsubsection{Résultats}
+
+      À faire
+
+\end{document} 
